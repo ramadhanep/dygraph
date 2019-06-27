@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#faab1a">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Dygraph</title>
+  <link rel="stylesheet" href="packages/core/css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="apple-touch-icon" href="img/dygraph-apk.png">
+  <link rel="icon" href="img/dygraph-apk.png">
+</head>
+<body>
+  <div id="app">
+    <div class="statusbar"></div>
+    <div class="panel panel-left panel-cover">
+      <div class="page sidebar">
+        <div class="page-content">
+          <div class="block-title sidebar">
+            <div class="child_">
+                <img src="img/dygraph-white-apk.png" alt="">
+                <p class="text-uppercase color-white">Dygraph</p>
+            </div>
+            <div class="child__">
+                <img src="img/user/default-user.png" alt="" width="25" height="25">
+                <a href="/akun/" id="akun-link2" class="link panel-close icon-settings-link">
+                    <i class="icon f7-icons ios-only">settings</i>
+                    <i class="icon material-icons md-only">settings</i>
+                </a>
+            </div>
+          </div>
+          <div class="block-title color-white">Menu</div>
+          <div class="list links-list">
+            <ul class="ul-sidebar no-after">
+              <li class="active">
+                <a href="/" id="home-link" class="panel-close link-menu no-after-before">
+                  <i class="icon f7-icons ios-only">home</i>
+                  <i class="icon material-icons md-only">home</i>
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="/category/" id="category-link" class="panel-close link-menu no-after-before">
+                  <i class="icon f7-icons ios-only">fire</i>
+                  <i class="icon material-icons md-only">image</i>
+                  Kategori
+                </a>
+              </li>
+              <li>
+                <a href="/fotografer/" id="fotografer-link" class="panel-close link-menu no-after-before">
+                  <i class="icon f7-icons ios-only">camera</i>
+                  <i class="icon material-icons md-only">camera</i>
+                  Fotografer
+                </a>
+              </li>
+            </ul>
+          </div>  
+          <div class="block-title color-white">Pengguna</div>
+          <div class="list links-list">
+            <ul class="ul-sidebar no-after">
+              <li>
+                <a href="/akun/" id="akun-link" class="panel-close link-menu no-after-before">
+                  <i class="icon f7-icons ios-only">person_round</i>
+                  <i class="icon material-icons md-only">account_circle</i>
+                  Akun
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popover moreMenu">
+      <div class="popover-angle"></div>
+      <div class="popover-inner">
+        <div class="list">
+          <ul>
+            <li class="li-popover">
+              <a href="auth/logout.html" class="link external list-button popover-close">
+                <i class="icon f7-icons ios-only">exit</i>
+                <i class="icon material-icons md-only">exit_to_app</i>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="800" data-url="/">
+      <div class="page">
+        <div class="navbar no-after-before">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons ios-only">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+              </a>
+            </div>
+            <div class="title sliding">Dygraph</div>
+            <div class="right">
+              <a href="./index.html" class="link external icon-only">
+                <i class="icon f7-icons ios-only">refresh</i>
+                <i class="icon material-icons md-only">refresh</i>
+              </a>
+              <a class="link icon-only popover-open" data-popover=".moreMenu">
+                <i class="icon f7-icons ios-only">more_vertical</i>
+                <i class="icon material-icons md-only">more_vert</i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="page-content home">
+          <div id="loader-home" class="loader-api"><div class="preloader color-orange"></div></div>
+          <div id="home-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="packages/core/js/framework7.bundle.min.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    $$('.link-menu').click(function(){
+      $$('.link-menu').parent('li.active').removeClass('active');
+      $$(this).parent('li').addClass('active');
+    });
+
+    function loadHome(){
+      var id_user = localStorage.getItem("id_user");
+      app.request({
+        url: '../../../Dygraph/public/mobileHome',
+        method: "GET",
+        data: {id_user: id_user},
+        success:function(data){
+          setTimeout(function(){
+            $$('#home-content').empty();
+            $$('#home-content').html(data);
+            $$('#loader-home').addClass('hide');
+          }, 0);
+        },
+        error: function (jqXHR, exception) {
+          if (jqXHR.status === 0) {
+            app.request({
+              url: 'halaman/offline.html',
+              method: "GET",
+              success:function(data){
+                setTimeout(function(){
+                  $$('#home-content').empty();
+                  $$('#home-content').html(data);
+                  $$('#loader-home').addClass('hide');
+                }, 0);
+              }
+            })
+          }
+        }
+      })
+      
+      $$(document).on("click", ".savePhoto", function(e){
+        e.preventDefault();
+        var url = $$(this).attr("href");
+        window.imagedownloader
+          .download(
+              url,
+              function successFn() {
+                  alert('Image was downloaded');
+              },
+              function failureFn() {
+                  alert('Fail to download image');
+              }
+          );
+      })
+      $$(document).on("click", ".likePhoto", function(e){
+        e.preventDefault();
+        var id_foto = $$(this).attr("id");
+        var id_user = localStorage.getItem("id_user");
+
+        $$('.likePhotoF7-'+id_foto).html('heart_fill');
+        $$('.likePhotoF7-'+id_foto).html('favorite');
+        var d = $$('.likeCount-'+id_foto).attr('id');
+        $$('.likeCount-'+id_foto).html(Number(d) + 1);
+
+        $$(this).removeClass('likePhoto');
+        app.request({
+          url: '../../../Dygraph/public/likeFoto',
+          method: "GET",
+          data: {id_user: id_user, id_foto: id_foto},
+          success:function(data){
+            console.log(data);
+            console.log(id_foto);
+            console.log(id_user);
+          }
+        });
+      })
+    }
+
+    function loadCategory(){
+      app.request({
+        url: '../../../Dygraph/public/mobileCategory',
+        success:function(data){
+          setTimeout(function(){
+            $$('#category-content').empty();
+            $$('#category-content').html(data);
+            $$('#loader-category').addClass('hide');
+          }, 0);
+        },
+        error: function (jqXHR, exception) {
+          if (jqXHR.status === 0) {
+            app.request({
+              url: 'halaman/offline.html',
+              method: "GET",
+              success:function(data){
+                setTimeout(function(){
+                  $$('#category-content').empty();
+                  $$('#category-content').html(data);
+                  $$('#loader-category').addClass('hide');
+                }, 0);
+              }
+            })
+          }
+        }
+      });
+    }
+
+    function loadFotografer(){
+      app.request({
+        url: '../../../Dygraph/public/mobileFotografer',
+        success:function(data){
+          setTimeout(function(){
+            $$('#fotografer-content').empty();
+            $$('#fotografer-content').html(data);
+            $$('#loader-fotografer').addClass('hide');
+          }, 0);
+        },
+        error: function (jqXHR, exception) {
+          if (jqXHR.status === 0) {
+            app.request({
+              url: 'halaman/offline.html',
+              method: "GET",
+              success:function(data){
+                setTimeout(function(){
+                  $$('#fotografer-content').empty();
+                  $$('#fotografer-content').html(data);
+                  $$('#loader-fotografer').addClass('hide');
+                }, 0);
+              }
+            })
+          }
+        }
+      });
+    }
+
+    function loadAkun(){
+      var id_user = localStorage.getItem("id_user");
+      var name = localStorage.getItem("name");
+      var email = localStorage.getItem("email");
+
+      $$('#id_userAkun').val(id_user);
+      $$('#nameAkun').val(name);
+      $$('#emailAkun').val(email);
+      console.log(name);
+
+      $$('#ch_password_parent').hide();
+      $$('#ch_password_btn_cancel').hide();
+      $$('#pw_idf').val('0');
+      $$('#ch_password_btn').click(function(e){
+        e.preventDefault();
+        $$('#ch_password_parent').show();
+        $$(this).hide();
+        $$('#ch_password_btn_cancel').show();
+        $$('#ch_passwordAkun').val('');
+        $$('#pw_idf').val('1');
+      });
+      $$('#ch_password_btn_cancel').click(function(e){
+        e.preventDefault();
+        $$('#ch_password_parent').hide();
+        $$(this).hide();
+        $$('#ch_password_btn').show();
+        $$('#ch_passwordAkun').val('');
+        $$('#pw_idf').val('0');
+      });
+
+      $$('#akunForm').submit(function(e){
+        e.preventDefault();
+        app.dialog.preloader();
+        var data = new FormData(this);
+        app.request({
+          url: 'auth/api/akun.php',
+          method: "POST",
+          data: data,
+          success:function(data){
+            if(data == "1"){
+              app.dialog.close();
+              var toast = app.toast.create({
+                  text: '<span class="f7-icons" style="font-size:16px;margin-right:5px;">alert_fill</span> Berhasil memperbarui informasi',
+                  closeButton: true,
+                  position: 'bottom',
+                  closeButtonText: 'Close',
+                  closeButtonColor: 'orange',
+                  closeTimeout: 2000,
+              });
+              toast.open();
+              $$('#ch_password_btn_cancel').click();
+            }
+            else{
+              app.dialog.close();
+              console.log('salah');
+            }
+          }
+        })
+      });
+    }
+    
+    loadHome();
+    loadCategory();
+    loadFotografer();
+    loadAkun();
+
+    $$('#home-link').click(function(e){
+      loadHome();
+    });
+    $$('#category-link').click(function(e){
+      loadCategory();
+    });
+    $$('#fotografer-link').click(function(e){
+      loadFotografer();
+    });
+    $$('#akun-link').click(function(e){
+      var load = setInterval(function(){
+        loadAkun();
+      },0)
+      setTimeout(function(){
+        clearInterval(load);
+      }, 5)
+    });
+    $$('#akun-link2').click(function(e){
+      var load = setInterval(function(){
+        loadAkun();
+      },0)
+      setTimeout(function(){
+        clearInterval(load);
+      }, 5)
+    });
+  </script>
+</body>
+</html>

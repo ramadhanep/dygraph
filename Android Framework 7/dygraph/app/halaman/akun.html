@@ -1,0 +1,65 @@
+<div class="page">
+    <div class="navbar no-after-before">
+        <div class="navbar-inner">
+            <div class="left">
+            <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons ios-only">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+            </a>
+            </div>
+            <div class="title sliding">Akun</div>
+            <div class="right">
+            <a class="link icon-only popover-open" data-popover=".moreMenu">
+                <i class="icon f7-icons ios-only">more_vertical</i>
+                <i class="icon material-icons md-only">more_vert</i>
+            </a>
+            </div>
+        </div>
+    </div>
+    <div class="page-content">
+        <div class="profile-view">
+          <div class="profile-logo">
+              <img src="img/dygraph-white-apk.png" alt="">
+          </div>
+            <img src="img/user/default-user.png" alt="">
+        </div>
+        <form id="akunForm" class="list form-store-data">
+            <input type="hidden" name="id_user" id="id_userAkun">
+            <input type="hidden" name="pw_idf" id="pw_idf">
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Nama Lengkap</div>
+                  <div class="item-input-wrap">
+                    <input name="name" id="nameAkun" type="text" placeholder="Nama Lengkap" value="" required validate data-error-message="Form Nama Lengkap Wajib diisi!" class="">
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Email (Tidak bisa diubah)</div>
+                  <div class="item-input-wrap">
+                    <input name="email" id="emailAkun" type="email" placeholder="Email" disabled>
+                  </div>
+                </div>
+              </li>
+              <a href="#" id="ch_password_btn" class="button color-orange w-152">Ubah Password</a href="#">
+              <a href="#" id="ch_password_btn_cancel" class="button color-orange w-73">Batal</a href="#">
+              <li id="ch_password_parent" class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Password Baru</div>
+                  <div class="item-input-wrap">
+                    <input name="ch_password" id="ch_passwordAkun" type="password" placeholder="Password Baru">
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="list submit-parent">
+                <button type="submit" class="button button-fill color-orange btn-profile">Konfirmasi</button>
+            </div>
+        </form>
+    </div>
+</div>
+          

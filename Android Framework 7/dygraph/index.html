@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#faab1a">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+    <title>Dygraph</title>
+    <link rel="stylesheet" href="app/packages/core/css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="app/css/app.css">
+    <link rel="stylesheet" href="app/css/custom.css">
+    <link rel="apple-touch-icon" href="app/img/dygraph-apk.png">
+    <link rel="icon" href="app/img/dygraph-apk.png">
+</head>
+<body>
+    <div id="app" class="app-start">
+        <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="800" data-url="/">
+          <div class="page start">
+            <div class="logo">
+              <img src="app/img/dygraph-white-apk.png" alt="" width="120" height="120">
+              <p>Dygraph</p>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
+
+<script src="app/packages/core/js/framework7.bundle.min.js"></script>
+<script src="app/js/routes.js"></script>
+<script>
+    var $$ = Dom7;
+    var app = new Framework7();
+
+    function toastError(){
+        var self = this;
+        if (!self.toastWithButton) {
+        self.toastWithButton = self.app.toast.create({
+            text: '<span class="f7-icons" style="font-size:16px;margin-right:5px;">alert_fill</span> No internet connection!',
+            closeButton: true,
+            position: 'top',
+            closeButtonText: 'Close',
+            closeButtonColor: 'blue',
+        });
+        }
+        self.toastWithButton.open();
+    }
+    function checkSession(){
+      app.request({
+        url: 'app/auth/api/check_session.php',
+        dataType: "JSON",
+        success:function(data){
+          if(data == "0"){
+            window.location="app/auth/login.html";
+          }
+          else{
+            var datae = JSON.parse(data);
+            localStorage.clear();
+            localStorage.setItem("id_user", datae.id_user);
+            localStorage.setItem("name", datae.name);
+            localStorage.setItem("email", datae.email);
+            window.location="./app/index.html";
+          }
+        },
+        error: function (jqXHR, exception) {
+          if (jqXHR.status === 0) {
+              toastError();
+          }
+        }
+      })
+    }
+
+    setInterval(function(){
+      checkSession();
+    }, 2000);
+</script>

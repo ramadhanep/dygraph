@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login - Dygraph</title>
+    <link rel="stylesheet" href="../packages/core/css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/custom-login.css">
+</head>
+<body>
+    <div class="page no-toolbar no-navbar no-swipeback">
+        <div class="page-content login-screen-content">
+            <div class="wave"></div>
+            <div class="wrapper-content">
+                <div class="logo">
+                    <img src="../img/dygraph-white-apk.png" alt="">
+                </div>
+                <div class="title-login">
+                    <div class="login-screen-title">Login</div>
+                </div>
+                <br>
+                <form id="loginForm">
+                <div class="list">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-floating-label">Email</div>
+                                <div class="item-input-wrap">
+                                <input type="email" name="email" required validate data-error-message="Form Email Wajib diisi dengan benar!">
+                                <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-floating-label">Password</div>
+                                <div class="item-input-wrap">
+                                <input type="password" name="password" required validate data-error-message="Form Password wajib diisi!">
+                                <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list zbutton">
+                    <ul>
+                        <li><button type="submit" class="button btn">Sign in</button></li>
+                    </ul>
+                    <div class="block-footer">Dont have an account? <a class="link external" href="register.html"> Sign up!</a></div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="../packages/core/js/framework7.bundle.min.js"></script>
+<script src="../js/routes.js"></script>
+<script>
+    var $$ = Dom7;
+    var app = new Framework7();
+
+    
+    app.dialog.preloader();
+
+    setTimeout(function(){
+        app.dialog.close();
+    },500)
+
+    function toastError(){
+        var self = this;
+        if (!self.toastWithButton) {
+        self.toastWithButton = self.app.toast.create({
+            text: '<span class="f7-icons" style="font-size:16px;margin-right:5px;">alert_fill</span> Email password salah!',
+            closeButton: true,
+            position: 'bottom',
+            closeButtonText: 'Close',
+            closeButtonColor: 'blue',
+        });
+        }
+        self.toastWithButton.open();
+    }
+    $$('#loginForm').submit(function(e){
+        e.preventDefault();
+        var data = new FormData(this);
+        app.dialog.preloader();
+        app.request({
+            url: "api/check_login.php",
+            method: "POST",
+            data: data,
+            dataType: "JSON",
+            success:function(data){
+                if(data != "0"){
+                    var datae = JSON.parse(data);
+                    app.dialog.close();
+                    localStorage.clear();
+                    localStorage.setItem("id_user", datae.id_user);
+                    localStorage.setItem("name", datae.name);
+                    localStorage.setItem("email", datae.email);
+                    window.location = "../index.html#!/home/";
+                }
+                else{
+                    app.dialog.close();
+                    toastError();
+                }
+            },
+        })
+    })
+</script>

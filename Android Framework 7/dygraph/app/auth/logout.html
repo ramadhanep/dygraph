@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login - Dygraph</title>
+    <link rel="stylesheet" href="../packages/core/css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/custom-login.css">
+</head>
+<body>
+    <div class="page no-toolbar no-navbar no-swipeback">
+        <div class="page-content login-screen-content">
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="../packages/core/js/framework7.bundle.min.js"></script>
+<script src="../js/routes.js"></script>
+<script>
+    var $$ = Dom7;
+    var app = new Framework7();
+    app.dialog.preloader();
+    app.request({
+        url: "api/logout.php",
+        success:function(data){
+            if(data == 1){
+                app.dialog.close();
+                window.location = "login.html";
+            }
+        },
+        error: function (jqXHR, exception) {
+          if (jqXHR.status === 0) {
+            var toast = app.toast.create({
+                text: '<span class="f7-icons" style="font-size:16px;margin-right:5px;">alert_fill</span> No internet connection!',
+                closeButton: true,
+                position: 'top',
+                closeButtonText: 'Close',
+                closeButtonColor: 'orange',
+            });
+            toast.open();
+          }
+        }
+    })
+</script>
